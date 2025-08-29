@@ -58,10 +58,7 @@ export default function AddTodoModal({
     <>
       {/* 오버레이 */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-opacity-50 z-40" onClick={onClose} />
       )}
 
       {/* 할 일 추가 모달 */}
@@ -190,7 +187,7 @@ export default function AddTodoModal({
           <button
             type="submit"
             disabled={!text.trim()}
-            className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-gray-900 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             할 일 추가
           </button>

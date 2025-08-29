@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import BackgroundSettings from "./BackgroundSettings";
+import { Menu, Image, Printer, Share2, ArrowLeft, X } from "lucide-react";
 
 interface OptionsMenuProps {
   isOpen: boolean;
@@ -10,29 +11,30 @@ interface OptionsMenuProps {
 
 export default function OptionsMenu({ isOpen, onClose }: OptionsMenuProps) {
   const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const options = [
     {
       id: "sort",
-      icon: "☰",
+      icon: Menu,
       label: "정렬",
       description: "할 일 정렬 방식 변경",
     },
     {
       id: "background",
-      icon: "🖼️",
+      icon: Image,
       label: "배경 설정",
       description: "배경 이미지 및 효과 변경",
     },
     {
       id: "print",
-      icon: "🖨️",
+      icon: Printer,
       label: "목록 인쇄",
       description: "할 일 목록을 인쇄하기",
     },
     {
       id: "share",
-      icon: "📤",
+      icon: Share2,
       label: "복사본 보내기",
       description: "할 일 목록을 다른 사람과 공유",
     },
@@ -66,26 +68,46 @@ export default function OptionsMenu({ isOpen, onClose }: OptionsMenuProps) {
   if (showBackgroundSettings) {
     return (
       <div className="fixed inset-0 z-50">
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm rounded-t-3xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/20">
+        <div
+          className={`fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm rounded-t-3xl shadow-2xl max-h-[90vh] overflow-y-auto border border-white/20 transform transition-transform duration-300 ease-in-out ${
+            isClosing ? "translate-y-full" : "translate-y-0"
+          }`}
+        >
           <div className="p-6">
             {/* 뒤로가기 버튼 */}
             <div className="flex items-center justify-between mb-4">
               <button
-                onClick={() => setShowBackgroundSettings(false)}
-                className="flex items-center gap-2 text-gray-900 hover:text-blue-700 font-medium"
+                onClick={() => {
+                  setShowBackgroundSettings(false);
+                }}
+                className="flex items-center gap-2 text-gray-900 hover:text-blue-700 font-medium transition-colors"
               >
-                <span className="text-xl">←</span>
-                <span className="pt-2">뒤로</span>
+                <ArrowLeft className="w-5 h-5" />
+                <span>뒤로</span>
               </button>
               <button
-                onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 text-xl"
+                onClick={() => {
+                  setIsClosing(true);
+                  setTimeout(() => {
+                    setShowBackgroundSettings(false);
+                    onClose();
+                    setIsClosing(false);
+                  }, 300);
+                  console.log("onClose 호출 완료");
+                }}
+                className="text-gray-900 hover:text-gray-700 transition-colors"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
             <BackgroundSettings
-              onClose={() => setShowBackgroundSettings(false)}
+              onClose={() => {
+                setIsClosing(true);
+                setTimeout(() => {
+                  setShowBackgroundSettings(false);
+                  setIsClosing(false);
+                }, 300);
+              }}
             />
           </div>
         </div>
@@ -131,7 +153,7 @@ export default function OptionsMenu({ isOpen, onClose }: OptionsMenuProps) {
               className="w-full flex items-center justify-between p-4 rounded-xl hover:bg-white/50 transition-colors text-left border border-white/30 bg-white/30"
             >
               <div className="flex items-center gap-4">
-                <span className="text-2xl">{option.icon}</span>
+                <option.icon className="w-6 h-6 text-gray-600" />
                 <div>
                   <div className="font-medium text-gray-800">
                     {option.label}
